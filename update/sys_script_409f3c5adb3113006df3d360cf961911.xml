@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_58872_needit_needit</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>NeedIt When needed field date</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	//1 
+	//1 // Add your code here
+//1 // rightnow stores the current time
+	//1 var rightnow = new GlideDateTime();
+	//1 // Create a GlideDateTime object for the When needed date
+//1 	var whenNeeded = new GlideDateTime(current.u_when_needed);
+
+	//1 // If the When needed date is before rightnow, do not write the record to the database
+	//1 // Output an error message to the screen
+	//1 if(whenNeeded.before(rightnow)){
+		//1 gs.addErrorMessage("When needed date cannot be in the past.  Your request has not been saved to the database.");
+		//1 current.setAbortAction(true);
+	//1 }
+
+	// pass the When needed field value to the isDateToday method in NeedItUtils
+	var isToday = niutils.isDateToday(current.u_when_needed);
+	
+	// if the isDateToday method returns true the When needed date is today 
+	if(isToday == true){
+		gs.addErrorMessage("You cannot submit NeedIt requests for today.- BR-WhenNeededField");
+		current.setAbortAction(true);
+	}
+	
+	// Instantiate the NeedItUtils class.  Call the isDatePast method and pass 
+	// the u_when_needed value.
+	var niutils = new NeedItUtils();
+	var isPast = niutils.isDatePast(current.u_when_needed);
+
+	// If the isDatePast method returns true, the date is in the past.
+	if(isPast == true){
+		gs.addErrorMessage("When needed date cannot be in the past.  Your request has not been saved to the database.-- BR-WhenNeededField");
+		current.setAbortAction(true);
+	}
+	
+	//2 // Challenge:  Do not allow same-day requests
+	//2 // Get the date portion of rightnow and whenNeeded (no timestamp)
+	//2 var today = rightnow.getLocalDate();
+	//2 var istoday = whenNeeded.getLocalDate();
+	//2 // Compare today and istoday to see if they are the same day
+	//2 if(today.compareTo(istoday) == 0){
+	//2	 gs.addErrorMessage("You cannot submit NeedIt requests for today.");
+	//2 	current.setAbortAction(true);
+	//2 }
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-05-03 02:39:54</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>409f3c5adb3113006df3d360cf961911</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>NeedIt When needed field date</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_update_name>sys_script_409f3c5adb3113006df3d360cf961911</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-05-04 07:09:57</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=409f3c5adb3113006df3d360cf961911"/>
+</record_update>
